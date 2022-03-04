@@ -1,0 +1,23 @@
+name: build-migrations
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-base.yml
+    with:
+      configuration: debug
+      project_file: kamafi.auth.data.migrations/kamafi.auth.data.migrations.csproj
+
+  build_docker:
+    needs: build
+    uses: ./.github/workflows/build-docker-base.yml
+    with:
+      configuration: debug
+      project_file: kamafi.auth.data.migrations/kamafi.auth.data.migrations.csproj
+      dockerfile: kamafi-auth-data-migrations.dockerfile
+      tag: kamafi-auth-data-migrations:latest
