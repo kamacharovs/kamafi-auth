@@ -1,0 +1,27 @@
+name: build-core
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-base.yml
+    with:
+      configuration: release
+      project_file: kamafi.auth.core/kamafi.auth.core.csproj
+      project_test_file: kamafi.auth.tests/kamafi.auth.tests.csproj
+      output_path: app/publish
+
+  build_docker:
+    needs: build
+    uses: ./.github/workflows/build-docker-base.yml
+    with:
+      configuration: release
+      project_file: kamafi.auth.core/kamafi.auth.core.csproj
+      project_test_file: kamafi.auth.tests/kamafi.auth.tests.csproj
+      output_path: app/publish
+      dockerfile: kamafi-auth-core.dockerfile
+      tag: kamafi-auth:latest

@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32210.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kamafi.auth.core", "kamafi.auth.core\kamafi.auth.core.csproj", "{172D5245-1234-4A65-A321-06199FD90F8A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kamafi.auth.data", "kamafi.auth.data\kamafi.auth.data.csproj", "{06AA0B0F-AF73-4E6D-88C4-B01FE0DF62B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kamafi.auth.services", "kamafi.auth.services\kamafi.auth.services.csproj", "{55E6300B-6000-4677-A42A-A0381631BB89}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kamafi.auth.tests", "kamafi.auth.tests\kamafi.auth.tests.csproj", "{86216F1E-0437-46BD-9BB8-C29C44A92AC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kamafi.auth.data.migrations", "kamafi.auth.data.migrations\kamafi.auth.data.migrations.csproj", "{6DD7D526-9C60-4C88-A99F-79F6F219DFC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8F9F71A4-EADE-4C9B-BF26-BF00D5E22168}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{172D5245-1234-4A65-A321-06199FD90F8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{172D5245-1234-4A65-A321-06199FD90F8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{172D5245-1234-4A65-A321-06199FD90F8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{172D5245-1234-4A65-A321-06199FD90F8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06AA0B0F-AF73-4E6D-88C4-B01FE0DF62B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06AA0B0F-AF73-4E6D-88C4-B01FE0DF62B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06AA0B0F-AF73-4E6D-88C4-B01FE0DF62B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06AA0B0F-AF73-4E6D-88C4-B01FE0DF62B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55E6300B-6000-4677-A42A-A0381631BB89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55E6300B-6000-4677-A42A-A0381631BB89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55E6300B-6000-4677-A42A-A0381631BB89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55E6300B-6000-4677-A42A-A0381631BB89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86216F1E-0437-46BD-9BB8-C29C44A92AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86216F1E-0437-46BD-9BB8-C29C44A92AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86216F1E-0437-46BD-9BB8-C29C44A92AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86216F1E-0437-46BD-9BB8-C29C44A92AC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DD7D526-9C60-4C88-A99F-79F6F219DFC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DD7D526-9C60-4C88-A99F-79F6F219DFC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DD7D526-9C60-4C88-A99F-79F6F219DFC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DD7D526-9C60-4C88-A99F-79F6F219DFC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D9574F81-4E96-41C8-8AEE-14BA9C5EDF2F}
+	EndGlobalSection
+EndGlobal
