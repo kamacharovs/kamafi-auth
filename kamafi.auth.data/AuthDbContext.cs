@@ -53,15 +53,15 @@ namespace kamafi.auth.data
             {
                 e.ToTable("user_api_key");
 
-                e.HasKey(x => x.UserId);
+                e.HasKey(x => new { x.UserId, x.ApiKey });
 
-                e.HasQueryFilter(x => x.IsEnabled.GetValueOrDefault());
+                e.HasQueryFilter(x => x.IsEnabled);
 
                 e.Property(x => x.UserId).IsRequired();
                 e.Property(x => x.ApiKey).HasMaxLength(200).IsRequired();
                 e.Property(x => x.Created).ValueGeneratedOnAdd().HasDefaultValueSql("current_timestamp").IsRequired();
                 e.Property(x => x.Updated).ValueGeneratedOnUpdate().HasDefaultValueSql("current_timestamp").IsRequired();
-                e.Property(x => x.IsEnabled).HasDefaultValueSql("true").IsRequired();
+                e.Property(x => x.IsEnabled).IsRequired();
             });
 
             modelBuilder.Entity<Role>(e =>
