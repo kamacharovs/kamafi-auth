@@ -37,13 +37,12 @@ namespace kamafi.auth.data.extensions
             return Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
-        public static string GenerateApiKey<T>(int length = 32)
-            where T : class
+        public static string GenerateApiKey(int length = 32)
         {
             var key = new byte[length];
             using (var generator = RandomNumberGenerator.Create())
                 generator.GetBytes(key);
-            return $"{typeof(T).Name.Base64Encode()}.{Convert.ToBase64String(key)}";
+            return Convert.ToBase64String(key);
         }
 
         public static string DecodeKey([NotNull] this string apiKey)

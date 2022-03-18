@@ -113,7 +113,7 @@ namespace kamafi.auth.services
                 userId = user.UserId;
             }
 
-            var apiKey = AuthExtensions.GenerateApiKey<User>();
+            var apiKey = AuthExtensions.GenerateApiKey();
             var userApiKey = new UserApiKey
             {
                 UserId = userId.GetValueOrDefault(),
