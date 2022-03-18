@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using kamafi.auth.data;
 using kamafi.auth.data.models;
 using kamafi.auth.data.exceptions;
+using kamafi.auth.data.extensions;
 
 namespace kamafi.auth.services
 {
@@ -102,6 +103,30 @@ namespace kamafi.auth.services
             await _context.SaveChangesAsync();
 
             return user;
+        }
+
+        public async Task<UserApiKey> AddApiKeyAsync(int? userId = null, bool isEnabled = true)
+        {
+            if (userId is null)
+            {
+                var user = await GetAsync();
+                userId = user.UserId;
+            }
+
+            var apiKey = AuthExtensions.GenerateApiKey<User>();
+            var userApiKey = new UserApiKey
+            {
+                UserId = userId.GetValueOrDefault(),
+                ApiKey = apiKey,
+                Created = DateTime.UtcNow,
+                Updated = DateTime.UtcNow,
+                IsEnabled = isEnabled
+            };
+
+            await _context.UserApiKeys.AddAsync(userApiKey);
+            await _context.SaveChangesAsync();
+
+            return userApiKey;
         }
 
         // Source: https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-6.0

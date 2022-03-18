@@ -6,6 +6,6 @@
         public string ApiKey { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
-        public bool? IsEnabled { get; set; } = true;
+        public bool IsEnabled { get; set; } = true;
     }
 }
