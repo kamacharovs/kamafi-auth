@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FluentValidation;
 using kamafi.auth.core.extensions;
+using kamafi.auth.data;
 using kamafi.auth.data.models;
 using kamafi.auth.data.validators;
 using kamafi.auth.data.extensions;
@@ -35,9 +36,9 @@ services.AddAuthorization()
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = config["Jwt:Issuer"],
-            ValidAudience = config["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]))
+            ValidIssuer = config[Keys.JwtIssuer],
+            ValidAudience = config[Keys.Audience],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config[Keys.JwtKey]))
         };
     });
 
@@ -49,7 +50,6 @@ services.AddMvcCore()
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
