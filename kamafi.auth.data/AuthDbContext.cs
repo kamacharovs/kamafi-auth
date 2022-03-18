@@ -21,8 +21,8 @@ namespace kamafi.auth.data
 
                 e.HasKey(x => x.UserId);
 
-                e.HasIndex(x => x.Email)
-                    .IsUnique();
+                e.HasIndex(x => x.Email).IsUnique();
+                e.HasIndex(x => x.PublicKey);
 
                 e.Property(x => x.UserId).ValueGeneratedOnAdd().IsRequired();
                 e.Property(x => x.PublicKey).ValueGeneratedOnAdd().HasDefaultValueSql("gen_random_uuid()").IsRequired();
@@ -65,6 +65,7 @@ namespace kamafi.auth.data
                 e.ToTable("role");
 
                 e.HasKey(x => x.RoleName);
+                e.HasIndex(x => x.PublicKey);
 
                 e.Property(x => x.RoleName).HasMaxLength(100).IsRequired();
                 e.Property(x => x.PublicKey).ValueGeneratedOnAdd().HasDefaultValueSql("gen_random_uuid()").IsRequired();

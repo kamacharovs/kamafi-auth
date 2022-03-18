@@ -4,6 +4,7 @@ namespace kamafi.auth.services
 {
     public interface IUserRepository
     {
+        Task<User> GetAsync();
         Task<User> GetAsync(int userId);
         Task<User> GetAsync(string apiKey);
         Task<TokenResponse> GetTokenAsync(TokenRequest request);

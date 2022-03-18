@@ -18,6 +18,14 @@ namespace kamafi.auth.core.Controllers
             _repo = repo;
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("me")]
+        public async Task<IActionResult> GetAsync()
+        {
+            return Ok(await _repo.GetAsync());
+        }
+
         [Authorize(Roles = Roles.Admin)]
         [HttpGet]
         [Route("{userId}")]
