@@ -65,13 +65,15 @@ namespace kamafi.auth.tests
             return config;
         }
 
-        public static ITenant GetTenant()
+        public static ITenant GetTenant(
+            Guid? publicKey = null,
+            string role = null)
         {
             var tenant = Substitute.For<ITenant>();
 
             tenant.Actor.Returns("user");
-            tenant.PublicKey.Returns(Guid.NewGuid());
-            tenant.Role.Returns("user");
+            tenant.PublicKey.Returns(publicKey ?? Guid.NewGuid());
+            tenant.Role.Returns(role ?? "user");
             tenant.Claims.Returns(new System.Collections.Generic.Dictionary<string, string>
             {
                 { "actor", "user" }
