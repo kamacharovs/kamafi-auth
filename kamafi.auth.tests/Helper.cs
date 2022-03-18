@@ -65,6 +65,22 @@ namespace kamafi.auth.tests
             return config;
         }
 
+        public static ITenant GetTenant()
+        {
+            var tenant = Substitute.For<ITenant>();
+
+            tenant.Actor.Returns("user");
+            tenant.PublicKey.Returns(Guid.NewGuid());
+            tenant.Role.Returns("user");
+            tenant.Claims.Returns(new System.Collections.Generic.Dictionary<string, string>
+            {
+                { "actor", "user" }
+            });
+            tenant.Token.Returns("token");
+
+            return tenant;
+        }
+
         public static ITokenRepository<User> GetUserTokenRepository()
         {
             return new TokenRepository<User>(
@@ -76,6 +92,7 @@ namespace kamafi.auth.tests
         {
             return new UserRepository(
                 logger: Substitute.For<ILogger<UserRepository>>(),
+                tenant: GetTenant(),
                 tokenRepo: GetUserTokenRepository(),
                 context: GetContext());
         }
