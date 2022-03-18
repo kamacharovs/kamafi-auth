@@ -100,6 +100,11 @@ namespace kamafi.auth.services
 
             _logger.LogInformation("Added User with UserId={UserId}", user.UserId);
 
+            if (dto.AddApiKey)
+            {
+                await AddApiKeyAsync(user.UserId);
+            }
+
             return user;
         }
 
