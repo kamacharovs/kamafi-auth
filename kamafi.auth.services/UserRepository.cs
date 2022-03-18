@@ -73,8 +73,9 @@ namespace kamafi.auth.services
 
         public async Task<TokenResponse> GetTokenAsync(TokenRequest request)
         {
-            //var user = await GetAsync(request.ApiKey);
-            var user = await GetAsync(request.Email, request.Password);
+            var user = request.ApiKey is null
+                ? await GetAsync(request.Email, request.Password)
+                : await GetAsync(request.ApiKey);
 
             return _tokenRepo.BuildToken(user);
         }
