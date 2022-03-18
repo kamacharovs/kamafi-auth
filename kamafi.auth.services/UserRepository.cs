@@ -12,6 +12,7 @@ namespace kamafi.auth.services
     public class UserRepository : IUserRepository
     {
         private readonly ILogger<UserRepository> _logger;
+        private readonly ITenant _tenant;
         private readonly ITokenRepository<User> _tokenRepo;
         private readonly AuthDbContext _context;
 
@@ -21,12 +22,20 @@ namespace kamafi.auth.services
 
         public UserRepository(
             ILogger<UserRepository> logger,
+            ITenant tenant,
             ITokenRepository<User> tokenRepo,
             AuthDbContext context)
         {
             _logger = logger;
+            _tenant = tenant;
             _tokenRepo = tokenRepo;
             _context = context;
+        }
+
+        public async Task<User> GetAsync()
+        {
+            return await _context.Users
+                .FirstAsync(x => x.PublicKey == _tenant.PublicKey);
         }
 
         public async Task<User> GetAsync(int userId)

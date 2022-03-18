@@ -83,7 +83,7 @@ namespace kamafi.auth.core.middlewares
             }
 
             var problemjson = JsonSerializer
-                .Serialize(problem, new JsonSerializerOptions { IgnoreNullValues = true });
+                .Serialize(problem, new JsonSerializerOptions { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
 
             httpContext.Response.StatusCode = problem.Code ?? StatusCodes.Status500InternalServerError;
             httpContext.Response.ContentType = "application/problem+json";

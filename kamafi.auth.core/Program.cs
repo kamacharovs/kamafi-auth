@@ -13,8 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var config = builder.Configuration;
 
-// Add services to the container.
-
 services.AddDataConfiguration(config)
     .AddControllers();
 
@@ -22,8 +20,10 @@ services.AddEndpointsApiExplorer();
 services.AddScoped<ITokenRepository<User>, TokenRepository<User>>()
     .AddScoped<IAuthRepository, AuthRepository>()
     .AddScoped<IUserRepository, UserRepository>()
+    .AddScoped<ITenant, Tenant>()
     .AddSingleton<IValidator<TokenRequest>, TokenRequestValidator>()
-    .AddSwaggerGen();
+    .AddSwaggerGen()
+    .AddHttpContextAccessor();
 
 services.AddAuthorization()
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
