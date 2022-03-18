@@ -42,7 +42,6 @@ namespace kamafi.auth.services
         public async Task<User> GetAsync(int userId)
         {
             return await _context.Users
-                .Include(x => x.Role)
                 .FirstOrDefaultAsync(x => x.UserId == userId)
                 ?? throw new AuthNotFoundException();
         }
@@ -50,10 +49,8 @@ namespace kamafi.auth.services
         public async Task<User> GetAsync(string apiKey)
         {
             return await _context.Users
-                .Include(x => x.ApiKeys)
                 .FirstOrDefaultAsync(x => x.UserId ==
-                    x.ApiKeys.First(x => x.ApiKey == apiKey
-                                      && x.IsEnabled == true).UserId)
+                    x.ApiKeys.First(x => x.ApiKey == apiKey).UserId)
                 ?? throw new AuthNotFoundException();
         }
 
@@ -98,9 +95,10 @@ namespace kamafi.auth.services
                 Updated = DateTime.UtcNow
             };
 
-            await _context.Users
-                .AddAsync(user);
+            await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Added User with UserId={UserId}", user.UserId);
 
             return user;
         }
@@ -125,6 +123,8 @@ namespace kamafi.auth.services
 
             await _context.UserApiKeys.AddAsync(userApiKey);
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Added User.ApiKey for UserId={UserId}", userApiKey.UserId);
 
             return userApiKey;
         }

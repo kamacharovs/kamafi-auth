@@ -55,7 +55,7 @@ namespace kamafi.auth.data
 
                 e.HasKey(x => x.UserId);
 
-                e.HasQueryFilter(x => !x.IsEnabled);
+                e.HasQueryFilter(x => x.IsEnabled);
 
                 e.Property(x => x.UserId).IsRequired();
                 e.Property(x => x.ApiKey).HasMaxLength(200).IsRequired();
