@@ -39,8 +39,8 @@ namespace kamafi.auth.data
                 e.Property(x => x.IsDeleted).IsRequired();
 
                 e.HasOne(x => x.Role)
-                    .WithOne()
-                    .HasForeignKey<User>(x => x.RoleName)
+                    .WithMany()
+                    .HasForeignKey(x => x.RoleName)
                     .OnDelete(DeleteBehavior.NoAction);
 
                 e.HasMany(x => x.ApiKeys)
@@ -55,7 +55,7 @@ namespace kamafi.auth.data
 
                 e.HasKey(x => x.UserId);
 
-                e.HasQueryFilter(x => x.IsEnabled);
+                e.HasQueryFilter(x => x.IsEnabled.GetValueOrDefault());
 
                 e.Property(x => x.UserId).IsRequired();
                 e.Property(x => x.ApiKey).HasMaxLength(200).IsRequired();
