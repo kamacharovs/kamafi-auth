@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using kamafi.auth.data;
@@ -11,9 +12,10 @@ using kamafi.auth.data;
 namespace kamafi.auth.data.migrations.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220318153146_update_is_enabled_user_api_key")]
+    partial class update_is_enabled_user_api_key
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,6 +136,7 @@ namespace kamafi.auth.data.migrations.Migrations
                         .HasDatabaseName("ix_user_public_key");
 
                     b.HasIndex("RoleName")
+                        .IsUnique()
                         .HasDatabaseName("ix_user_role_name");
 
                     b.ToTable("user", (string)null);
@@ -146,6 +149,7 @@ namespace kamafi.auth.data.migrations.Migrations
                         .HasColumnName("user_id");
 
                     b.Property<string>("ApiKey")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
                         .HasColumnName("api_key");
@@ -157,8 +161,10 @@ namespace kamafi.auth.data.migrations.Migrations
                         .HasDefaultValueSql("current_timestamp");
 
                     b.Property<bool>("IsEnabled")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("is_enabled");
+                        .HasColumnName("is_enabled")
+                        .HasDefaultValueSql("true");
 
                     b.Property<DateTime>("Updated")
                         .ValueGeneratedOnUpdate()
@@ -166,7 +172,7 @@ namespace kamafi.auth.data.migrations.Migrations
                         .HasColumnName("updated")
                         .HasDefaultValueSql("current_timestamp");
 
-                    b.HasKey("UserId", "ApiKey")
+                    b.HasKey("UserId")
                         .HasName("pk_user_api_key");
 
                     b.ToTable("user_api_key", (string)null);
@@ -175,8 +181,8 @@ namespace kamafi.auth.data.migrations.Migrations
             modelBuilder.Entity("kamafi.auth.data.models.User", b =>
                 {
                     b.HasOne("kamafi.auth.data.models.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleName")
+                        .WithOne()
+                        .HasForeignKey("kamafi.auth.data.models.User", "RoleName")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_user_roles_role_temp_id");

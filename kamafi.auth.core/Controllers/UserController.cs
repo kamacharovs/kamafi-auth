@@ -26,6 +26,14 @@ namespace kamafi.auth.core.Controllers
             return Ok(await _repo.GetAsync());
         }
 
+        [Authorize]
+        [HttpPost]
+        [Route("me/api/key")]
+        public async Task<IActionResult> AddUserApiKeyAsync()
+        {
+            return Ok(await _repo.AddApiKeyAsync());
+        }
+
         [Authorize(Roles = Roles.Admin)]
         [HttpGet]
         [Route("{userId}")]

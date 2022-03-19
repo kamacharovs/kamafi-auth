@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using kamafi.auth.data;
@@ -11,9 +12,10 @@ using kamafi.auth.data;
 namespace kamafi.auth.data.migrations.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220318160153_update_user_role_relationship")]
+    partial class update_user_role_relationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,6 +148,7 @@ namespace kamafi.auth.data.migrations.Migrations
                         .HasColumnName("user_id");
 
                     b.Property<string>("ApiKey")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
                         .HasColumnName("api_key");
@@ -156,9 +159,12 @@ namespace kamafi.auth.data.migrations.Migrations
                         .HasColumnName("created")
                         .HasDefaultValueSql("current_timestamp");
 
-                    b.Property<bool>("IsEnabled")
+                    b.Property<bool?>("IsEnabled")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("is_enabled");
+                        .HasColumnName("is_enabled")
+                        .HasDefaultValueSql("true");
 
                     b.Property<DateTime>("Updated")
                         .ValueGeneratedOnUpdate()
@@ -166,7 +172,7 @@ namespace kamafi.auth.data.migrations.Migrations
                         .HasColumnName("updated")
                         .HasDefaultValueSql("current_timestamp");
 
-                    b.HasKey("UserId", "ApiKey")
+                    b.HasKey("UserId")
                         .HasName("pk_user_api_key");
 
                     b.ToTable("user_api_key", (string)null);

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using kamafi.auth.data;
 using kamafi.auth.data.models;
 using kamafi.auth.data.exceptions;
+using kamafi.auth.data.extensions;
 
 namespace kamafi.auth.services
 {
@@ -41,7 +42,6 @@ namespace kamafi.auth.services
         public async Task<User> GetAsync(int userId)
         {
             return await _context.Users
-                .Include(x => x.Role)
                 .FirstOrDefaultAsync(x => x.UserId == userId)
                 ?? throw new AuthNotFoundException();
         }
@@ -49,10 +49,8 @@ namespace kamafi.auth.services
         public async Task<User> GetAsync(string apiKey)
         {
             return await _context.Users
-                .Include(x => x.ApiKeys)
                 .FirstOrDefaultAsync(x => x.UserId ==
-                    x.ApiKeys.First(x => x.ApiKey == apiKey
-                                      && x.IsEnabled == true).UserId)
+                    x.ApiKeys.First(x => x.ApiKey == apiKey).UserId)
                 ?? throw new AuthNotFoundException();
         }
 
@@ -75,8 +73,9 @@ namespace kamafi.auth.services
 
         public async Task<TokenResponse> GetTokenAsync(TokenRequest request)
         {
-            //var user = await GetAsync(request.ApiKey);
-            var user = await GetAsync(request.Email, request.Password);
+            var user = request.ApiKey is null
+                ? await GetAsync(request.Email, request.Password)
+                : await GetAsync(request.ApiKey);
 
             return _tokenRepo.BuildToken(user);
         }
@@ -97,11 +96,43 @@ namespace kamafi.auth.services
                 Updated = DateTime.UtcNow
             };
 
-            await _context.Users
-                .AddAsync(user);
+            await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
+            _logger.LogInformation("Added User with UserId={UserId}", user.UserId);
+
+            if (dto.AddApiKey)
+            {
+                await AddApiKeyAsync(user.UserId);
+            }
+
             return user;
+        }
+
+        public async Task<UserApiKey> AddApiKeyAsync(int? userId = null, bool isEnabled = true)
+        {
+            if (userId is null)
+            {
+                var user = await GetAsync();
+                userId = user.UserId;
+            }
+
+            var apiKey = AuthExtensions.GenerateApiKey();
+            var userApiKey = new UserApiKey
+            {
+                UserId = userId.GetValueOrDefault(),
+                ApiKey = apiKey,
+                Created = DateTime.UtcNow,
+                Updated = DateTime.UtcNow,
+                IsEnabled = isEnabled
+            };
+
+            await _context.UserApiKeys.AddAsync(userApiKey);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Added User.ApiKey for UserId={UserId}", userApiKey.UserId);
+
+            return userApiKey;
         }
 
         // Source: https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-6.0

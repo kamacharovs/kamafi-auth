@@ -24,6 +24,8 @@ namespace kamafi.auth.data
                 e.HasIndex(x => x.Email).IsUnique();
                 e.HasIndex(x => x.PublicKey);
 
+                e.HasQueryFilter(x => !x.IsDeleted);
+
                 e.Property(x => x.UserId).ValueGeneratedOnAdd().IsRequired();
                 e.Property(x => x.PublicKey).ValueGeneratedOnAdd().HasDefaultValueSql("gen_random_uuid()").IsRequired();
                 e.Property(x => x.FirstName).HasMaxLength(200).IsRequired();
@@ -37,8 +39,8 @@ namespace kamafi.auth.data
                 e.Property(x => x.IsDeleted).IsRequired();
 
                 e.HasOne(x => x.Role)
-                    .WithOne()
-                    .HasForeignKey<User>(x => x.RoleName)
+                    .WithMany()
+                    .HasForeignKey(x => x.RoleName)
                     .OnDelete(DeleteBehavior.NoAction);
 
                 e.HasMany(x => x.ApiKeys)
@@ -51,13 +53,15 @@ namespace kamafi.auth.data
             {
                 e.ToTable("user_api_key");
 
-                e.HasKey(x => x.UserId);
+                e.HasKey(x => new { x.UserId, x.ApiKey });
+
+                e.HasQueryFilter(x => x.IsEnabled);
 
                 e.Property(x => x.UserId).IsRequired();
                 e.Property(x => x.ApiKey).HasMaxLength(200).IsRequired();
                 e.Property(x => x.Created).ValueGeneratedOnAdd().HasDefaultValueSql("current_timestamp").IsRequired();
                 e.Property(x => x.Updated).ValueGeneratedOnUpdate().HasDefaultValueSql("current_timestamp").IsRequired();
-                e.Property(x => x.IsEnabled).HasDefaultValueSql("true").IsRequired();
+                e.Property(x => x.IsEnabled).IsRequired();
             });
 
             modelBuilder.Entity<Role>(e =>
